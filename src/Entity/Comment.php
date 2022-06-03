@@ -29,6 +29,9 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private $conference;
 
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    private $note;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,7 +42,7 @@ class Comment
         return $this->author;
     }
 
-    public function setàuthor(string $author): self
+    public function setauthor(string $author): self
     {
         $this->author = $author;
 
@@ -90,6 +93,23 @@ class Comment
     public function setConference(?Conference $conference): self
     {
         $this->conference = $conference;
+
+        return $this;
+    }
+    // Pour l’entité « Comment », la valeur sera simplement l’adresse mail de la personne qui a fait le commentaire.
+    public function __toString(): string
+    {
+        return $this->email;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?int $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

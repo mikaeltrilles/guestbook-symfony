@@ -117,4 +117,9 @@ class Conference
 
         return $this;
     }
+    // Pour l’entité « Conference », la valeur sera la ville de la conférence avec l’année entre parenthèse.
+    public function __toString():string
+    {
+        return $this->city . ' (' . $this->year . ')';
+    }
 }
