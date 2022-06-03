@@ -27,7 +27,7 @@ class CommentCrudController extends AbstractCrudController
         yield TextField::new('author')->setLabel('Auteur');
         yield TextField::new('email')->setLabel('E-mail');
         yield TextEditorField::new('text')->setLabel('Commentaire')->hideOnIndex();
-        yield NumberField::new('note')->setLabel('Note');
+        yield NumberField::new('note')->setLabel('Note')->hideOnIndex();
         $createdAt = DateTimeField::new('createdAt', 'Créé le')->setFormTypeOptions([
             'html5' => true,
             'years' => range(date('Y'), date('Y') + 5),
