@@ -30,6 +30,8 @@ class ConferenceCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
+            ->setEntityLabelInSingular('Conférence')
+            ->setEntityLabelInPlural('Conférences')
             ->setSearchFields(['city', 'year'])
             ->setDefaultSort(['year' => 'DESC']);
     }
@@ -37,9 +39,9 @@ class ConferenceCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(TextFilter::new('city','Ville'))
+            ->add(TextFilter::new('city', 'Ville'))
             ->add(TextFilter::new('year', 'Année'))
-            ->add(BooleanFilter::new('isInternational' , 'Internationale ?'))
+            ->add(BooleanFilter::new('isInternational', 'Internationale ?'))
             ;
     }
 }
