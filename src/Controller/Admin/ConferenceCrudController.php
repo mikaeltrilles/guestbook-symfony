@@ -22,6 +22,7 @@ class ConferenceCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
+        yield TextField::new('nom')->setLabel('Nom');
         yield TextField::new('city')->setLabel('Ville');
         yield TextField::new('year')->setLabel('Année');
         yield BooleanField::new('isInternational')->setLabel('Internationale ?');
@@ -32,7 +33,7 @@ class ConferenceCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Conférence')
             ->setEntityLabelInPlural('Conférences')
-            ->setSearchFields(['city', 'year'])
+            ->setSearchFields(['nom','city', 'year'])
             ->setDefaultSort(['year' => 'DESC']);
     }
 

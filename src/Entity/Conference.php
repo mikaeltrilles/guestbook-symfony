@@ -30,6 +30,9 @@ class Conference
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photoFileName;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $Nom;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -121,5 +124,17 @@ class Conference
     public function __toString():string
     {
         return $this->city . ' (' . $this->year . ')';
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->Nom;
+    }
+
+    public function setNom(?string $Nom): self
+    {
+        $this->Nom = $Nom;
+
+        return $this;
     }
 }
