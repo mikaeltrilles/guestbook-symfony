@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to GuestBook!
+{% endblock %}
+
+
+{% block body %}
+	<div>
+		{% if app.user %}
+			<div class="mb-3">
+				Vous êtes connectez en tant que
+				{{ app.user.userIdentifier }},
+				<a href="{{ path('app_logout') }}">Se deconnecter !</a>
+			</div>
+		{% else %}
+			<div class="fluid-container text-center">
+				<h1>Bienvenue sur mon super site Guestbook gestionnaire de conférence by Mikael Trilles</h1>
+			</div>
+		{% endif %}
+
+	</div>
+{% endblock %}
