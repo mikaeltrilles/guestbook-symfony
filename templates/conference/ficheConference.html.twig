@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+	<h1>{{ conference.city ~ ' - ' ~ conference.year }}</h1>
+	{# Si iln'y a pas de commentaires j'affiche un message #}
+	{% if comments is empty %}
+		<p>Aucun commentaire pour le moment</p>
+	{% else %}
+		{# Sinon j'affiche les commentaires et note de la conferance #}
+			<div class="d-flex" style="height: auto; width:80%"> <table class="table table-dark table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Date</th>
+						<th scope="col">Auteur</th>
+						<th scope="col">Commentaire</th>
+						<th scope="col">Note</th>
+					</tr>
+				</thead>
+				{% for comment in comments %}
+					<tbody>
+						<tr>
+							{# inserer date de création du commentaire #}
+							<td>{{ comment.createdAt|date('d/m/Y') }}</td>
+							<td>{{ comment.author }}</td>
+							<td>{{ comment.text|raw}}</td>
+							<td>{{ comment.note}}</td>
+						</tr>
+					</tbody>
+				{% endfor %}
+			{% endif %}
+		</table>
+	</div>
+</div>
+
+
+{# <div class="\" row\"">
+																									<div class="\" col-md-12\"">
+																										<h3>{{ comment.author }}</h3>
+																										<p>{{ comment.text|raw}}</p>
+																										<p>Note :
+																											{{ comment.note }}</p>
+																									</div>
+																								</div> #}
+
+{# </div>
+								</div>
+							</div> #}{% endblock %}

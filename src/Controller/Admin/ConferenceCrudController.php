@@ -41,7 +41,6 @@ class ConferenceCrudController extends AbstractCrudController
         return $filters
             ->add(TextFilter::new('city', 'Ville'))
             ->add(TextFilter::new('year', 'Année'))
-            ->add(BooleanFilter::new('isInternational', 'Internationale ?'))
             ;
     }
 }
