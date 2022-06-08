@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Conference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,6 +54,22 @@ class ConferenceRepository extends ServiceEntityRepository
            ->getResult()
        ;
     }
+
+    public const PAGINATOR_PER_PAGE_CONF = 4;
+
+    public function getConferencePaginator(int $offset): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.year', 'DESC')
+            ->addOrderBy('c.city')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE_CONF)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ;
+        return new Paginator($query);
+    }
+
+
 
 //    public function findOneBySomeField($value): ?Conference
 //    {

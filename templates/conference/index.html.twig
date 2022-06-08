@@ -16,9 +16,24 @@ conférences » #}
 			<li class="list-group-item">
 				{{ conferenceRepository.getCity() ~ ' - ' ~ conferenceRepository.getYear() }}
 				<a href="{{ path('ficheConference', {'id': conferenceRepository.getId()}) }}">
-					<span class="bi bi-eye-fill link-secondary"> Voir</span>
+					<span class="bi bi-eye-fill link-secondary">
+						Voir</span>
 				</a>
 			</li>
 		{% endfor %}
 	</ul>
+	<div class="row">
+		<div class="col-12">
+			{% if previous >= 0 %}
+				<a class="btn btn-sm btn-primary" href="{{ path('app_conference', { offset: previous } )}}">Pécédent</a>
+			{% endif %}
+
+			Il y a
+			{{ conferences|length ~ ' conférence' ~ ( conferences|length > 1 ? 's' : '' ) }}
+
+			{% if next < conferences|length %}
+				<a class="btn btn-sm btn-primary" href="{{ path('app_conference', { offset: next } )}}">Suivant</a>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
