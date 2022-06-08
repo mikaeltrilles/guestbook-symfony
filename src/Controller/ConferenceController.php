@@ -16,13 +16,24 @@ class ConferenceController extends AbstractController
     // je liste toute les conferences avec un paginator
     public function index(ConferenceRepository $conferenceRepository, Request $request): Response
     {
-        $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $conferenceRepository ->getConferencePaginator($offset);
+        $cities = $conferenceRepository->getListCity();
+        $cities_search =$request->query->get('cities_search', '');
         
+        $years= $conferenceRepository->getListYear();
+        $year_search = $request->query->get('year_search', '');
+        
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $conferenceRepository ->getConferencePaginator($offset, $year_search, $cities_search);
+        $years = $conferenceRepository->getListYear();
+        $cities = $conferenceRepository->getListCity();
         return $this->render('conference/index.html.twig', [
-            'conferences' => $paginator,
+            'cities_search' => $cities_search,
+            'cities' => $cities,
+            'year_search' => $year_search,
+            'years' => $years,
             'previous'=> $offset - ConferenceRepository::PAGINATOR_PER_PAGE_CONF,
             'next'=> min(count($paginator), $offset + ConferenceRepository::PAGINATOR_PER_PAGE_CONF),
+            'conferences' => $paginator,
         ]);
     }
             

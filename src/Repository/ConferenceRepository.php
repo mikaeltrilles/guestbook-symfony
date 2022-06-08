@@ -56,20 +56,57 @@ class ConferenceRepository extends ServiceEntityRepository
     }
 
     public const PAGINATOR_PER_PAGE_CONF = 4;
-
-    public function getConferencePaginator(int $offset): Paginator
+    // je recherche les conférences par année et par ville, je fais une requête avec une jointure
+    public function getConferencePaginator(int $offset, string $year, string $city): Paginator
     {
-        $query = $this->createQueryBuilder('c')
-            ->orderBy('c.year', 'DESC')
-            ->addOrderBy('c.city')
-            ->setMaxResults(self::PAGINATOR_PER_PAGE_CONF)
-            ->setFirstResult($offset)
-            ->getQuery()
+        $query = $this->createQueryBuilder('c');
+        if ($year) {
+            $query->andWhere('c.year = :year')
+        ->setParameter('year', $year);
+        }
+        if ($city) {
+            $query->andWhere('c.city = :city')
+        ->setParameter('city', $city);
+        }
+
+        $query->setMaxResults(self::PAGINATOR_PER_PAGE_CONF)
+        ->setFirstResult($offset)
+        ->orderBy('c.year', 'ASC')
+        ->addOrderBy('c.city', 'ASC')
+        ->getQuery()
             ;
         return new Paginator($query);
     }
+    
 
+    public function getListYear()
+    {
+        $years = [];
+        foreach ($this->createQueryBuilder('c')
+            ->select('c.year')
+            ->distinct(true)
+            ->orderBy('c.year', 'ASC')
+            ->getQuery()
+            ->getResult() as $cols) {
+            $years[] = $cols['year'];
+        }
+        return $years;
+    }
 
+    // fonction qui liste les villes
+    public function getListCity()
+    {
+        $cities = [];
+        foreach ($this->createQueryBuilder('c')
+            ->select('c.city')
+            ->distinct(true)
+            ->orderBy('c.city', 'ASC')
+            ->getQuery()
+            ->getResult() as $cols) {
+            $cities[] = $cols['city'];
+        }
+        return $cities;
+    }
 
 //    public function findOneBySomeField($value): ?Conference
 //    {

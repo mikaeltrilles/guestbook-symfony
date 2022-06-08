@@ -7,7 +7,7 @@
 {% block body %}
 	{# J'affiche le titre de la conférence #}
 	<h1>{{ conference.nom }}</h1>
-	<h2>{{ conference.city ~ ' - ' ~ conference.year ~ ' - Internationale ? ' }}
+	<h2>{{ conference.city ~ ' - ' ~ conference.year ~ ' - Internationale : ' }}
 		{% if conference.isInternational %}
 			Oui
 		{% else %}
@@ -32,32 +32,42 @@
 			{% if next < comments|length %}
 				<a href="{{ path('ficheConference', { id: conference.id, offset: next }) }}" class="btn btn-sm btn-primary">Suivant</a>
 			{% endif %}
-
-		</div>
-		<div class="d-flex" style="height: auto; width:80%">
-			<table class="table table-dark table-striped">
-				<thead>
-					<tr>
-						<th scope="col">Auteur</th>
-						<th scope="col">Email</th>
-						<th scope="col">Date</th>
-						<th scope="col">Commentaire</th>
-					</tr>
-				</thead>
-				{% for comment in comments %}
-					<tbody>
-						<tr>
-							{# inserer date de création du commentaire #}
-							<td>{{ comment.author }}</td>
-							<td>{{ comment.email}}</td>
-							<td>{{ comment.createdAt|date('d/m/Y') }}</td>
-							<td>{{ comment.text|raw}}</td>
-						</tr>
-					</tbody>
-				{% endfor %}
-			{% endif %}
-		</table>
+		{% endif %}
 
 	</div>
+	{# <div class="d-flex" style="height: auto; width:80%">
+						<table class="table table-dark table-striped">
+							<thead>
+								<tr>
+									<th scope="col">Auteur</th>
+									<th scope="col">Email</th>
+									<th scope="col">Date</th>
+									<th scope="col">Commentaire</th>
+								</tr>
+							</thead>
+							{% for comment in comments %}
+								<tbody>
+									<tr>
+										<td>{{ comment.author }}</td>
+										<td>{{ comment.email}}</td>
+										<td>{{ comment.createdAt|date('d/m/Y') }}</td>
+										<td>{{ comment.text|raw}}</td>
+									</tr>
+								</tbody>
+							{% endfor %}
+						{% endif %}
+					</table>
+				</div> #}
 
+
+	{% for comment in comments %}
+		<div class="card mb-2">
+			<div class="card-header">{{ comment.createdAt|date('d/m/Y') ~ ' - ' ~ comment.author ~ ' - ' ~ comment.email}}
+			</div>
+			<div class="card-body">
+				<h5 class="card-title">Commentaire</h5>
+				<p class="card-text">{{ comment.text|raw}}</p>
+			</div>
+		</div>
+	{% endfor %}
 </div>{% endblock %}
