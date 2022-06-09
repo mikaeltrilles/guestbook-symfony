@@ -1,25 +1,28 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
+
 {% block title %}
-	{{conference.nom}}
+	{{ conference.nom }}
 {% endblock %}
 
-
 {% block body %}
-	{# J'affiche le titre de la conférence #}
-	<h1>{{ conference.nom }}</h1>
-	<h2>{{ conference.city ~ ' - ' ~ conference.year ~ ' - Internationale : ' }}
-		{% if conference.isInternational %}
-			Oui
-		{% else %}
-			Non
-		{% endif %}
-	</h2>
+	<a style="float: right;" href="{{path('app_conference')}}">Retourner à la liste des conférences</a>
+	<h1 class="m-5">{{ conference.nom }}</h1>
+	<h2 class="m-3">Caractéristiques</h2>
 
-
-	<div class="mb-3 container-fluid">
-		{{ form(form_comment) }}
-		</div>
-		{# <button type="submit" class="btn btn-primary" id="comment_form_enregistrer" name="comment_form[enregistrer]">Enregistrer</button> #}
-
-
-	{% endblock %}
+	<ul class='list-group m-3'>
+		<li class='list-group-item list-group-item-action'>Ville :
+			{{ conference.city }}</li>
+		<li class='list-group-item list-group-item-action'>Année :
+			{{ conference.year }}</li>
+		<li class='list-group-item list-group-item-action'>Internationale :
+			{% if conference.isInternational %}
+				Oui
+			{% else %}
+				Non
+			{% endif %}
+		</li>
+	</ul>
+	<div class="card-body">
+	{{ form(form_comment) }}
+	</div>
+{% endblock %}

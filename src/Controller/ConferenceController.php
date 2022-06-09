@@ -37,42 +37,32 @@ class ConferenceController extends AbstractController
             ]
         );
     }
-            
-        
-    
-
-
-
-
-
-
-
-    // public function index(ConferenceRepository $conferenceRepository): Response
-    // {
-    // return new Response('<h1>ok</h1>');
-    // appelle le template et lui passe un tableau nommé « conferences » qui contient un tableau de string renseignée en dur : $conferences = ["Paris (2022)", "Montpellier (2021)"];
-    // $conferences = ["Paris (2022)", "Montpellier (2021)"];
-    // return $this->render('conference/index.html.twig', ['conferences' => $conference]);
-    //     return $this->render('conference/index.html.twig', [
-    //         'conferences' => $conferenceRepository->findAll(),
-    //     ]);
-    // }
 
 
 
 
 
     #[Route('/conference/{id}', name: 'ficheConference')]
-    public function show(Conference $conference, CommentRepository $commentRepo, Request $request): Response
+    public function show(Conference $conference, CommentRepository $commentRepository, Request $request): Response
     {
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $commentRepo->getCommentPaginator($conference, $offset);
+        $paginator = $commentRepository->getCommentPaginator($conference, $offset);
+        $nbrePages = ceil(count($paginator) / CommentRepository::PAGINATOR_PER_PAGE);
+        $next = min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE);
+        $pageActuelle = ceil($next / CommentRepository::PAGINATOR_PER_PAGE);
+        $difPages = $nbrePages - $pageActuelle;
 
         return $this->render('conference/show.html.twig', [
             'conference' => $conference,
             'comments' => $paginator,
             'previous' => $offset - CommentRepository::PAGINATOR_PER_PAGE,
             'next' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
+            'next' => $next,
+            'nbrePages' => $nbrePages,
+            'offset' => CommentRepository::PAGINATOR_PER_PAGE,
+            'pageActuelle' => $pageActuelle,
+            'difPages' => $difPages,
+            // 'dir' => $photoUrl
         ]);
     }
 

@@ -32,7 +32,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoRoute('Accueil', 'fas fa-home', 'app_conference');
         yield MenuItem::linkToCrud('Conférences', 'fas fa-map-marker-alt', Conference::class);
         yield MenuItem::linkToCrud('Commentaires', 'fas fa-comments', Comment::class);
-
+        yield MenuItem::section('Pages du site');
         yield MenuItem::linktoRoute('Listes Conférences', 'fas fa-list', 'app_conference');
     }
 }
