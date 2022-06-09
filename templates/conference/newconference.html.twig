@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{% if page == 'add' %}
+		Ajouter une nouvelle conférence
+	{% else %}
+		Modifier conférence
+	{% endif %}
+
+{% endblock %}
+
+{% block body %}
+	{% if page == 'add' %}
+		<h1>Ajouter une nouvelle conférence</h1>
+	{% else %}
+		<h1>Modifier conférence</h1>
+	{% endif %}
+	<div class="card-body">
+		{{ form(form_add) }}
+		</div>
+	{% endblock %}

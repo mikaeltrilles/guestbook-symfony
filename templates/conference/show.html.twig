@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-	<a style="float: right;" href="{{path('app_conference')}}">Retourner à la liste des conférences</a>
+	<a style="float: right;" href="{{ path('app_conference' )}}">Retourner à la liste des conférences</a>
 	<h1 class="m-5">{{ conference.nom }}</h1>
 	<h2 class="m-3">Caractéristiques</h2>
 
@@ -24,7 +24,11 @@
 	</ul>
 
 	{# <img src="{{ dir ~ conference.photoFileName }}"> #}
-	<button class='btn btn-primary' style='float: right;'><a class="text-white text-decoration-none" href="{{ path('conference_newcomment' , {id: conference.id}) }}">Laisser un commentaire</a></button>
+	<button class='btn btn-primary' style='float: right;'>
+		<a class="text-white text-decoration-none" href="{{ path('conference_newcomment' , {id: conference.id}) }}">
+		Laisser un commentaire
+		</a>
+	</button>
 	<h2 class="m-3">Commentaires</h2>
 	<ul class='list-group m-3'>
 		{% for comment in comments %}

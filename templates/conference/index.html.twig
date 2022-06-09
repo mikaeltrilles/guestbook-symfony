@@ -58,26 +58,40 @@
 							<a class='text-decoration-none text-light' href="{{path('ficheConference', {id: conference.id})}}">voir le détail</a>
 						</button>
 						{% if app.User %}
-							{# <button class="btn btn-primary">
+							<button class="btn btn-primary">
 								<a class='text-decoration-none text-light' href="{{path('conference_modifconference' , {id: conference.id})}}">Modifier</a>
-							</button> #}
-							<button class="btn btn-primary prompt" id='{{ conference.id }}'>
-								<a class='text-decoration-none text-light' href="#">Supprimer</a>
+							</button>
+							<button type="button" class="btn btn-danger" data-bs-toggle="modal" id='{{ conference.id }}' data-bs-target="#exampleModal">Supprimer
 							</button>
 						{% endif %}
 					</span>
 				</li>
-				{# <div class="modale-{{ conference.id }}  modales" id='modale-{{ conference.id }}'>
-					<div class='modale-int'>
-						<p>êtes vous sur de vouloir supprimer cette conférence ?</p>
-						<button class="btn btn-primary oui">
-							<a class='text-decoration-none text-light' href="{{path('conference_supprConf' , {id: conference.id})}}">Oui</a>
-						</button>
-						<button class="non">
-							non
-						</button>
-					</div>
-				</div> #}
+						{# <!-- Modal --> #}
+					
+						<div class="modal fade modale-{{ conference.id }}  modales" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Etes vous sur de vouloir supprimer cette conférence ?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+										<button type="button" class="btn btn-danger"><a class='text-decoration-none text-light' href="{{path('conference_supprConf' , {id: conference.id})}}">Oui</a></button>
+									</div>
+								</div>
+							</div>
+						</div>
+{# fin de modal #}
+					</li>
+
+
+
+
+
 			{% endfor %}
 		</ul>
 
@@ -89,6 +103,6 @@
 			<a href="{{ path('app_conference', {offset: next }) }}" class="btn btn-sm btn-primary m-3"> >> </a>
 		{% endif %}
 		
-		<script src="{{asset('/js/index.js')}}"></script>
+
 	</div>
 {% endblock %}

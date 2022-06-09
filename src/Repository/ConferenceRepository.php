@@ -46,13 +46,14 @@ class ConferenceRepository extends ServiceEntityRepository
     public function findByYear($value): array
     {
         return $this->createQueryBuilder('conf')
-           ->andWhere('conf.year = :annee')
-           ->setParameter('annee', $value)
-           ->orderBy('conf.year', 'ASC')
-           ->setMaxResults(10)
-           ->getQuery()
-           ->getResult()
-       ;
+        ->andWhere('conf.year = :annee')
+        ->setParameter('annee', $value)
+        ->orderBy('conf.year', 'DESC')
+        ->addOrderBy('conf.city', 'ASC')
+        ->setMaxResults(10)
+        ->getQuery()
+        ->getResult()
+    ;
     }
 
     public const PAGINATOR_PER_PAGE_CONF = 4;
