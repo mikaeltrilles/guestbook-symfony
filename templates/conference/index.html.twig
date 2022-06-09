@@ -82,11 +82,13 @@
 		</ul>
 
 		{% if previous >= 0 %}
-			<a href="{{ path('app_conference', {offset: previous}) }}" class="btn btn-sm btn-primary m-3">
-				<<</a><ahref="{{path('app_conference',{offset:next})}}"class="btnbtn-smbtn-primarym-3">> {% endif %} {% if next < conferences|length %}>
-			</a>
+			<a href="{{ path('app_conference', {offset: previous}) }}" class="btn btn-sm btn-primary m-3"> << </a>
 		{% endif %}
 
+		{% if next < conferences|length %}
+			<a href="{{ path('app_conference', {offset: next }) }}" class="btn btn-sm btn-primary m-3"> >> </a>
+		{% endif %}
+		
 		<script src="{{asset('/js/index.js')}}"></script>
 	</div>
 {% endblock %}

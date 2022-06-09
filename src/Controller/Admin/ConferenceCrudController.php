@@ -26,6 +26,7 @@ class ConferenceCrudController extends AbstractCrudController
         yield TextField::new('city')->setLabel('Ville');
         yield TextField::new('year')->setLabel('Année');
         yield BooleanField::new('isInternational')->setLabel('Internationale ?');
+        yield TextField::new('PhotoFileName')->setLabel('Photo')->hideOnIndex();
     }
     
     public function configureCrud(Crud $crud): Crud
