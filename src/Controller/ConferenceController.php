@@ -16,28 +16,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConferenceController extends AbstractController
 {
     #[Route('/', name: 'app_conference')]
-    // je liste toute les conferences avec un paginator
-    public function index(ConferenceRepository $conferenceRepository, Request $request): Response
+    public function index(ConferenceRepository $ConferenceRepository, Request $request): Response
     {
-        $cities = $conferenceRepository->getListCity();
-        $cities_search = $request->query->get('cities_search', '');
-        
-        $years = $conferenceRepository->getListYear();
+        $city_search = $request->query->get('city_search', '');
         $year_search = $request->query->get('year_search', '');
-        
         $offset = max(0, $request->query->getInt('offset', 0));
-        $paginator = $conferenceRepository ->getConferencePaginator($offset, $year_search, $cities_search);
-        $years = $conferenceRepository->getListYear();
-        $cities = $conferenceRepository->getListCity();
-        return $this->render('conference/index.html.twig', [
-            'cities_search' => $cities_search,
-            'cities' => $cities,
-            'year_search' => $year_search,
-            'years' => $years,
-            'previous'=> $offset - ConferenceRepository::PAGINATOR_PER_PAGE_CONF,
-            'next'=> min(count($paginator), $offset + ConferenceRepository::PAGINATOR_PER_PAGE_CONF),
-            'conferences' => $paginator,
-        ]);
+        $paginator = $ConferenceRepository->getConferencePaginator($offset, $year_search, $city_search);
+        $years = $ConferenceRepository->getListYear();
+        $cities = $ConferenceRepository->getListCity();
+        return $this->render(
+            'conference/index.html.twig',
+            [
+                'conferences' => $paginator,
+                'previous' => $offset - ConferenceRepository::PAGINATOR_PER_PAGE_CONF,
+                'next' => min(count($paginator), $offset + ConferenceRepository::PAGINATOR_PER_PAGE_CONF),
+                'years' => $years,
+                'year_search' => $year_search,
+                'cities' => $cities,
+                'city_search' => $city_search
+            ]
+        );
     }
             
         

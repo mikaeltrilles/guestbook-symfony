@@ -1,87 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{# Afficher en titre de la page « Livre d’or des 
-conférences » #}
-
-
-{% block title %}
-	Livre d'or des conférences
+{% block title %}Livre d'or des conférences
 {% endblock %}
-{% block body %}
-	<div
-		class="container">
-		{# titre et sous-titre #}
-		<h1 class="text-black">Livre d'or des conférences</h1>
-		<h2 class="text-black">Faîtes-nous un retour !!!</h2>
 
-		{# Formulaire de recherche #}
-		<div>
-			<form>
-				<div class="form-group">
-					<label for="year" class="col-sm-6 col-form-label">Année</label>
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>Livre d'or des conférences</h1>
+		<h2>Faites-nous un retour!!!</h2>
+		<form action="">
+			<div class="row form-group">
+				<label for="year" class="col-sm-6 col-form-label">Année</label>
+				<div class="col-sm-6">
 					<select type="text" class="form-control" id="year_search" name="year_search">
 						<option></option>
 						{% for year in years %}
-							<option {{ (year == year_search ? 'selected' : '') }}>{{ year }}</option>
+							<option {{ (year == year_search ? 'selected') }}>{{ year }}</option>
 						{% endfor %}
 					</select>
 				</div>
-				<div class="form-group">
-					<label for="city" class="col-sm-6 col-form-label">Ville</label>
-					<select type="text" class="form-control" id="cities_search" name="cities_search">
+			</div>
+			<div class="row form-group">
+				<label for="city" class="col-sm-6 col-form-label">Ville</label>
+				<div class="col-sm-6">
+					<select type="text" class="form-control" id="city_search" name="city_search">
 						<option></option>
 						{% for city in cities %}
-							<option {{ (city == cities_search ? 'selected' : '') }}>{{ city }}</option>
+							<option {{ (city == city_search ? 'selected') }}>{{ city }}</option>
 						{% endfor %}
 					</select>
 				</div>
-				<button type="submit" class="btn btn-secondary">Rechercher</button>
-			</form>
-		</div>
-
-
-		{# Afficher la liste des conférences dans une liste #}
-		<div>
-			<ol class="list-group list-group-numbered">
-				{% for conferenceRepository in conferences %}
-					<li class="list-group-item d-flex justify-content-between align-items-start">
-						<div class="ms-2 me-auto">
-							<div class="fw-bold">{{ conferenceRepository.getNom() }}</div>
-							{{ conferenceRepository.getCity() ~ ' - ' ~ conferenceRepository.getYear() }}
-							<a class="link-info text-decoration-none" href="{{ path('ficheConference', {'id': conferenceRepository.getId()}) }}">
-								<i class="bi bi-eye-fill link-info text-decoration-none"></i>
-								Voir
-							</a>
-							{# Bouton ajouter un commentaire #}
-							<a class="link-info text-decoration-none" href="{{ path('conference_newcomment', {'id': conferenceRepository.getId()}) }}">
-								<i class="bi bi-plus-square-fill link-info text-decoration-none"></i>
-								Ajouter un commentaire
-							</div>
-							<span class="badge bg-info rounded-pill">{{conferenceRepository.comments|length~}}</span>
-						</li>
-					{% endfor %}
-				</ol>
 			</div>
+			<input type="submit" value="Chercher" class='btn btn-primary'>
+		</form>
 
+		<ul class='list-group'>
+			{% for conference in conferences%}
 
-			{# paghination #}
-			<div class="row">
-				<div class="col-12">
-					{% if previous >= 0 %}
-						<a class="btn btn-sm btn-secondary" href="{{ path('app_conference', { offset: previous } )}}">Pécédent</a>
-					{% endif %}
-
-					<span class="text-black">
-						Il y a
-						{{ conferences|length ~ ' conférence' ~ ( conferences|length > 1 ? 's' : '' ) }}
+				<li class='list-group-item list-group-item-action'>{{ conference.city ~ ' - ' ~ conference.year}}
+					<span style='float: right;'>
+						<button class='btn btn-primary'>
+							<a class="text-white text-decoration-none" href="{{ path('conference_newcomment' , {id: conference.id}) }}">Laisser un commentaire</a>
+						</button>
+						<button class="btn btn-primary">
+							<a class='text-decoration-none text-light' href="{{path('ficheConference', {id: conference.id})}}">voir le détail</a>
+						</button>
+						{% if app.User %}
+							{# <button class="btn btn-primary">
+								<a class='text-decoration-none text-light' href="{{path('conference_modifconference' , {id: conference.id})}}">Modifier</a>
+							</button> #}
+							<button class="btn btn-primary prompt" id='{{ conference.id }}'>
+								<a class='text-decoration-none text-light' href="#">Supprimer</a>
+							</button>
+						{% endif %}
 					</span>
+				</li>
+				{# <div class="modale-{{ conference.id }}  modales" id='modale-{{ conference.id }}'>
+					<div class='modale-int'>
+						<p>êtes vous sur de vouloir supprimer cette conférence ?</p>
+						<button class="btn btn-primary oui">
+							<a class='text-decoration-none text-light' href="{{path('conference_supprConf' , {id: conference.id})}}">Oui</a>
+						</button>
+						<button class="non">
+							non
+						</button>
+					</div>
+				</div> #}
+			{% endfor %}
+		</ul>
 
-					{% if next < conferences|length %}
-						<a class="btn btn-sm btn-secondary" href="{{ path('app_conference', { offset: next } )}}">Suivant</a>
-					{% endif %}
-				</div>
-			</div>
+		{% if previous >= 0 %}
+			<a href="{{ path('app_conference', {offset: previous}) }}" class="btn btn-sm btn-primary m-3">
+				<<</a><ahref="{{path('app_conference',{offset:next})}}"class="btnbtn-smbtn-primarym-3">> {% endif %} {% if next < conferences|length %}>
+			</a>
+		{% endif %}
 
-
-		</div>
-	{% endblock %}
+		<script src="{{asset('/js/index.js')}}"></script>
+	</div>
+{% endblock %}
