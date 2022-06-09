@@ -38,7 +38,7 @@ class CommentFormType extends AbstractType
                     'placeholder' => 'Votre email',
                 ],
             ])
-            ->add('createdAt')
+
             ->add('note', IntegerType::class, [
                 'label' => 'Note',
                 'required' => false,
@@ -46,13 +46,12 @@ class CommentFormType extends AbstractType
                     'placeholder' => 'Votre note',
                 ],
             ])
-            ->add('conference')
+
             // J'ajoute le bouton submit
             ->add('submit', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'btn btn-primary',
-                    'href' => '',
+                    'class' => 'btn btn-secondary',
                 ],
             ]);
         ;

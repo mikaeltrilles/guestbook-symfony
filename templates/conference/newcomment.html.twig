@@ -15,15 +15,11 @@
 		{% endif %}
 	</h2>
 
-	<form>
-		<div class="mb-3 container-fluid">
-			{{ form_row(form_comment.author) }}
-			{{ form_row(form_comment.email) }}
-			{{ form_row(form_comment.note) }}
-			{{ form_row(form_comment.text) }}
-			{{ form_row(form_comment.submit) }}
+
+	<div class="mb-3 container-fluid">
+		{{ form(form_comment) }}
 		</div>
 		{# <button type="submit" class="btn btn-primary" id="comment_form_enregistrer" name="comment_form[enregistrer]">Enregistrer</button> #}
-	</form>
 
-{% endblock %}
+
+	{% endblock %}

@@ -7,6 +7,7 @@ use App\Entity\Conference;
 use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,10 +95,25 @@ class ConferenceController extends AbstractController
     // }
 
     #[Route('/conference/{id}/newComment', name: 'conference_newcomment')]
-            public function newComment(Conference $conference, Request $request): Response
+            public function newComment(Conference $conference, Request $request, ManagerRegistry $doctrine, CommentRepository $commentRepository): Response
             {
                 $comment = new Comment();
                 $form = $this->createForm(CommentFormType::class, $comment);
+
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $comment->setConference($conference);
+                    $comment->setCreatedAt(new \DateTimeImmutable());
+                    
+                    $commentRepository->add($comment, true);
+
+                    // ou en utilisant le manager
+                    // $manager = $doctrine->getManager();
+                    // $manager->persist($comment);
+                    // $manager->flush();
+                
+                    return $this->redirectToRoute('ficheConference', [ 'id' => $conference->getId()]);
+                }
 
                 return $this->render('conference/newcomment.html.twig', [
                     'conference' => $conference,
