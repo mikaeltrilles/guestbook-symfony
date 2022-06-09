@@ -15,66 +15,73 @@ conférences » #}
 		<h2 class="text-black">Faîtes-nous un retour !!!</h2>
 
 		{# Formulaire de recherche #}
-		<form>
-			<div class="form-group">
-				<label for="year" class="col-sm-6 col-form-label">Année</label>
-				<select type="text" class="form-control" id="year_search" name="year_search">
-					<option></option>
-					{% for year in years %}
-						<option {{ (year == year_search ? 'selected' : '') }}>{{ year }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="city" class="col-sm-6 col-form-label">Ville</label>
-				<select type="text" class="form-control" id="cities_search" name="cities_search">
-					<option></option>
-					{% for city in cities %}
-						<option {{ (city == cities_search ? 'selected' : '') }}>{{ city }}</option>
-					{% endfor %}
-				</select>
-			</div>
-			<button type="submit" class="btn btn-success">Rechercher</button>
-		</form>
-
-
-		{# Afficher la liste des conférences dans une liste #}
-		<ol class="list-group list-group-numbered">
-			{% for conferenceRepository in conferences %}
-				<li class="list-group-item d-flex justify-content-between align-items-start">
-
-					<div class="ms-2 me-auto">
-						<div class="fw-bold">{{ conferenceRepository.getNom() }}</div>
-						{{ conferenceRepository.getCity() ~ ' - ' ~ conferenceRepository.getYear() }}
-						<a class="link-info text-decoration-none" href="{{ path('ficheConference', {'id': conferenceRepository.getId()}) }}">
-							<i class="bi bi-eye-fill link-info text-decoration-none"></i>
-							Voir
-						</a>
-					</div>
-					<span class="badge bg-primary rounded-pill">{{conferenceRepository.comments|length~}}</span>
-				</li>
-			{% endfor %}
-		</ol>
-
-
-		{# paghination #}
-		<div class="row">
-			<div class="col-12">
-				{% if previous >= 0 %}
-					<a class="btn btn-sm btn-info" href="{{ path('app_conference', { offset: previous } )}}">Pécédent</a>
-				{% endif %}
-
-				<span class="text-black">
-					Il y a
-					{{ conferences|length ~ ' conférence' ~ ( conferences|length > 1 ? 's' : '' ) }}
-				</span>
-
-				{% if next < conferences|length %}
-					<a class="btn btn-sm btn-info" href="{{ path('app_conference', { offset: next } )}}">Suivant</a>
-				{% endif %}
-			</div>
+		<div>
+			<form>
+				<div class="form-group">
+					<label for="year" class="col-sm-6 col-form-label">Année</label>
+					<select type="text" class="form-control" id="year_search" name="year_search">
+						<option></option>
+						{% for year in years %}
+							<option {{ (year == year_search ? 'selected' : '') }}>{{ year }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="city" class="col-sm-6 col-form-label">Ville</label>
+					<select type="text" class="form-control" id="cities_search" name="cities_search">
+						<option></option>
+						{% for city in cities %}
+							<option {{ (city == cities_search ? 'selected' : '') }}>{{ city }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<button type="submit" class="btn btn-secondary">Rechercher</button>
+			</form>
 		</div>
 
 
-	</div>
-{% endblock %}
+		{# Afficher la liste des conférences dans une liste #}
+		<div>
+			<ol class="list-group list-group-numbered">
+				{% for conferenceRepository in conferences %}
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">{{ conferenceRepository.getNom() }}</div>
+							{{ conferenceRepository.getCity() ~ ' - ' ~ conferenceRepository.getYear() }}
+							<a class="link-info text-decoration-none" href="{{ path('ficheConference', {'id': conferenceRepository.getId()}) }}">
+								<i class="bi bi-eye-fill link-info text-decoration-none"></i>
+								Voir
+							</a>
+							{# Bouton ajouter un commentaire #}
+							<a class="link-info text-decoration-none" href="{{ path('conference_newcomment', {'id': conferenceRepository.getId()}) }}">
+								<i class="bi bi-plus-square-fill link-info text-decoration-none"></i>
+								Ajouter un commentaire
+							</div>
+							<span class="badge bg-info rounded-pill">{{conferenceRepository.comments|length~}}</span>
+						</li>
+					{% endfor %}
+				</ol>
+			</div>
+
+
+			{# paghination #}
+			<div class="row">
+				<div class="col-12">
+					{% if previous >= 0 %}
+						<a class="btn btn-sm btn-secondary" href="{{ path('app_conference', { offset: previous } )}}">Pécédent</a>
+					{% endif %}
+
+					<span class="text-black">
+						Il y a
+						{{ conferences|length ~ ' conférence' ~ ( conferences|length > 1 ? 's' : '' ) }}
+					</span>
+
+					{% if next < conferences|length %}
+						<a class="btn btn-sm btn-secondary" href="{{ path('app_conference', { offset: next } )}}">Suivant</a>
+					{% endif %}
+				</div>
+			</div>
+
+
+		</div>
+	{% endblock %}

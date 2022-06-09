@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Conference;
+use App\Form\CommentFormType;
 use App\Repository\CommentRepository;
 use App\Repository\ConferenceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,9 +19,9 @@ class ConferenceController extends AbstractController
     public function index(ConferenceRepository $conferenceRepository, Request $request): Response
     {
         $cities = $conferenceRepository->getListCity();
-        $cities_search =$request->query->get('cities_search', '');
+        $cities_search = $request->query->get('cities_search', '');
         
-        $years= $conferenceRepository->getListYear();
+        $years = $conferenceRepository->getListYear();
         $year_search = $request->query->get('year_search', '');
         
         $offset = max(0, $request->query->getInt('offset', 0));
@@ -77,17 +79,29 @@ class ConferenceController extends AbstractController
 
         
     // public function ficheConference(ConferenceRepository $conferenceRepository, $id): Response
-        // {
-        //     $conference = $conferenceRepository->find($id);
-        //     return $this->render('conference/show.html.twig', [
-        //         'conference' => $conference,
-        //         'comments' => $conference->getComments(Conference::class, [
-        //             'Auteur'=> 'author',
-        //             'Contenu'=>'text',
-        //             'E-mail'=>'email',
-        //             'Date'=>'createdAt',
-        //             'Note'=>'note',
-        //         ]),
-        //     ]);
-        // }
+    // {
+    //     $conference = $conferenceRepository->find($id);
+    //     return $this->render('conference/show.html.twig', [
+    //         'conference' => $conference,
+    //         'comments' => $conference->getComments(Conference::class, [
+    //             'Auteur'=> 'author',
+    //             'Contenu'=>'text',
+    //             'E-mail'=>'email',
+    //             'Date'=>'createdAt',
+    //             'Note'=>'note',
+    //         ]),
+    //     ]);
+    // }
+
+    #[Route('/conference/{id}/newComment', name: 'conference_newcomment')]
+            public function newComment(Conference $conference, Request $request): Response
+            {
+                $comment = new Comment();
+                $form = $this->createForm(CommentFormType::class, $comment);
+
+                return $this->render('conference/newcomment.html.twig', [
+                    'conference' => $conference,
+                    'form_comment' => $form->createView()
+                    ]);
+            }
 }
